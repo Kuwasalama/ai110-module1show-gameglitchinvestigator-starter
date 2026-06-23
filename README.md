@@ -26,10 +26,28 @@ It wrote the code, ran away, and now the game is unplayable.
 ## 📝 Document Your Experience
 
 - [ ] Describe the game's purpose.
-- [ ] Detail which bugs you found.
-- [ ] Explain what fixes you applied.
+The purpose of the game is to challenge the player to guess a randomly generated number between 1 and 100. The player is given eight attempts to find the correct number before running out of guesses. Throughout the game, hints are provided to help the player determine whether their guess is too high or too low. If the player guesses the correct number within the allowed attempts, they win the game.
+- [ ] Detail which bugs you found. 
+ou started working on the game?
+
+When I first ran the game, I noticed several issues that affected gameplay. The New Game button did not start a new game when clicked. The guessing hints were sometimes incorrect, causing the game to tell the player to guess lower when the correct number was actually higher. The attempts counter was also inconsistent because the top of the page displayed attempts remaining while the bottom reported that the player was out of attempts and revealed the answer. Additionally, the first guess did not reduce the attempts count, and the score calculation appeared inconsistent throughout the game.
+- [ ] Explain what fixes you applied. 
+I fixed the hints so they finally point the right way, because the old code was turning the secret number into text on every other guess, which broke the comparison and flipped "go higher" and "go lower." I fixed the New Game button so it actually resets everything (the counter, score, and the typing box) instead of doing nothing. I also fixed the attempts counter by making the game update its numbers before drawing the screen, so it counts down on the very first guess and never shows "1 attempt left" and "out of attempts" at the same time. Last, I moved all the game rules into logic_utils.py so the main file just handles the screen, and I added tests to make sure the hint bug can't come back.
+
+
 
 ## 📸 Demo Walkthrough
+1. Start the game.
+2. Enter a guess of lets say "40".
+3. The game returns "Too Low."
+4. Enter a guess of "70".
+
+5. The game returns "Too High."
+6. Continue entering guesses using the hints provided by the game.
+7. The score updates after each guess.
+8. Enter the correct number.
+9. The game displays a winning message and ends the game.
+10. Click **New Game** to start a new round.
 
 Describe your fixed game in numbered steps so a reader can follow along without watching a video:
 
@@ -44,9 +62,24 @@ Describe your fixed game in numbered steps so a reader can follow along without 
 ## 🧪 Test Results
 
 ```
-# Paste your pytest output here, e.g.:
-# pytest tests/
-# ========================= X passed in 0.XXs =========================
+============================= test session starts =============================
+platform win32 -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0 -- python.exe
+cachedir: .pytest_cache
+rootdir: ...\ai110-module1show-gameglitchinvestigator-starter-main
+plugins: anyio-4.14.0
+collecting ... collected 9 items
+
+tests/test_game_logic.py::test_winning_guess PASSED                      [ 11%]
+tests/test_game_logic.py::test_guess_too_high PASSED                     [ 22%]
+tests/test_game_logic.py::test_guess_too_low PASSED                      [ 33%]
+tests/test_hint_regression.py::test_too_high_hint_says_go_lower PASSED   [ 44%]
+tests/test_hint_regression.py::test_too_low_hint_says_go_higher PASSED   [ 55%]
+tests/test_hint_regression.py::test_hint_direction_is_never_inverted PASSED [ 66%]
+tests/test_hint_regression.py::test_string_secret_compares_numerically_not_lexicographically PASSED [ 77%]
+tests/test_hint_regression.py::test_string_secret_matches_int_secret PASSED [ 88%]
+tests/test_hint_regression.py::test_winning_guess_with_string_secret PASSED [100%]
+
+============================== 9 passed in 0.44s ==============================
 ```
 
 ## 🚀 Stretch Features
